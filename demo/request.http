@@ -1,0 +1,73 @@
+### Playlist Endpoints
+
+# Get All Playlists
+GET http://localhost:8080/playlists
+Accept: application/json
+
+### Get Playlist by ID
+@playlistId = 2a197862-030b-4d3e-95bc-369e17f7f7f1
+
+@songId = 0b25a90d-e061-4330-86c7-bbeb19a662b0
+GET http://localhost:8080/playlists/{{playlistId}}
+Accept: application/json
+
+### Create a New Playlist
+POST http://localhost:8080/playlists
+Content-Type: application/json
+
+{
+  "name": "Summer Hits",
+  "rank": 1
+}
+
+### Update Playlist
+PUT http://localhost:8080/playlists/{{playlistId}}
+Content-Type: application/json
+
+{
+  "name": "Updated Summer Hits",
+  "rank": 2
+}
+
+### Delete Playlist
+DELETE http://localhost:8080/playlists/{{playlistId}}
+
+### Get Songs in Playlist
+GET http://localhost:8080/playlists/{{playlistId}}/songs
+Accept: application/json
+
+### Song Endpoints
+
+# Get All Songs
+GET http://localhost:8080/songs
+Accept: application/json
+
+### Get Song by ID
+GET http://localhost:8080/songs/{{songId}}
+Accept: application/json
+
+### Create a New Song
+POST http://localhost:8080/playlists/{{playlistId}}/songs
+Content-Type: application/json
+
+{
+  "title": "Sunflower",
+  "artist": "Swae Lee",
+  "length": 158,
+  "genre": "Pop"
+}
+
+### Update Song
+PUT http://localhost:8080/songs/{{songId}}
+Content-Type: application/json
+
+{
+  "title": "Updated Sunflower",
+  "artist": "Post Malone",
+  "length": 160,
+  "genre": "Pop"
+}
+
+### Delete Song
+DELETE http://localhost:8080/songs/{{songId}}
+
