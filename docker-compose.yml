@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./ng-music-app
+    ports:
+      - "80:80"
+    environment:
+      - API_URL=http://gateway:8080
+
+  gateway:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SONG_SERVICE_URL=http://song:8082
+      - PLAYLIST_SERVICE_URL=http://playlist:8081
+
+  playlist:
+    build: ./playlist-service
+    environment:
+      - SERVER_PORT=8081
+    depends_on:
+      - song
+
+  song:
+    build: ./song-service
+    environment:
+      - SERVER_PORT=8082
