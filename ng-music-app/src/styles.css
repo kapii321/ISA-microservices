@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  padding-top: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+/* Main content styling */
+.main-content {
+  flex: 1;
+  padding: 20px 0;
+}
+
+/* Card styling */
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* Button styling */
+.btn {
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+/* List group styling */
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  padding: 15px;
+}
+
+/* Navbar enhancement */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Footer styling */
+.footer {
+  margin-top: auto;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}

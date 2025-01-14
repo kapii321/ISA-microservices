@@ -7,62 +7,8 @@ import {SongService} from "../../../services/song.service";
 
 @Component({
   selector: 'app-playlist-details',
-  template: `
-    <div class="container mt-4" *ngIf="playlist">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>{{ playlist.name }}</h2>
-        <button class="btn btn-primary" [routerLink]="['songs', 'new']">Add New Song</button>
-      </div>
-
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Playlist Details</h5>
-          <p class="card-text">Rank: {{ playlist.rank }}</p>
-          <div class="btn-group">
-            <button class="btn btn-warning" [routerLink]="['/playlists', playlist.id, 'edit']">
-              Edit Playlist
-            </button>
-            <button class="btn btn-danger" (click)="deletePlaylist()">
-              Delete Playlist
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <h3>Songs</h3>
-      <ng-container *ngIf="songs.length > 0; else noSongsTemplate">
-        <div class="list-group">
-          <div *ngFor="let song of songs" class="list-group-item">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h5 class="mb-1">{{ song.title }}</h5>
-              </div>
-              <div class="btn-group">
-                <button class="btn btn-info btn-sm" [routerLink]="['/songs', song.id]">
-                  View
-                </button>
-                <button class="btn btn-warning btn-sm" [routerLink]="['songs', song.id, 'edit']">
-                  Edit
-                </button>
-                <button class="btn btn-danger btn-sm" (click)="deleteSong(song.id)">
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-template #noSongsTemplate>
-        <p class="text-muted">No songs in this playlist yet.</p>
-      </ng-template>
-
-      <button class="btn btn-secondary mt-3"
-              [routerLink]="['/playlists']">
-        Back to List View
-      </button>
-    </div>
-  `
+  templateUrl: './playlist-details.component.html',
+  styleUrls: ['./playlist-details.component.css']
 })
 export class PlaylistDetailsComponent implements OnInit {
   playlist?: Playlist;
