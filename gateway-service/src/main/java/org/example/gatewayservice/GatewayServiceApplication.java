@@ -1,5 +1,6 @@
 package org.example.gatewayservice;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -20,21 +21,25 @@ public class GatewayServiceApplication {
     }
 
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+    public RouteLocator customRouteLocator(
+            RouteLocatorBuilder builder,
+            @Value("${song.url}") String songUrl,
+            @Value("${playlist.url}") String playlistUrl
+    ) {
         return builder.routes()
                 .route("songs-service", r -> r
                         .path("/songs/**", "/playlists/*/songs/**")
-                        .uri("http://localhost:8082"))
+                        .uri(songUrl))
                 // Events routes
                 .route("events-service", r -> r
                         .path("/events/**")
-                        .uri("http://localhost:8082"))
+                        .uri(songUrl))
                 // Playlist routes
                 .route("playlist-service", r -> r
                         .path("/playlists/**")
                         .and()
                         .not(p -> p.path("/playlists/*/songs/**")) // Exclude the songs path
-                        .uri("http://localhost:8081"))
+                        .uri(playlistUrl))
                 .build();
     }
 
@@ -45,6 +50,7 @@ public class GatewayServiceApplication {
         corsConfig.setMaxAge(3600L);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         corsConfig.addAllowedHeader("*");
+        corsConfig.addExposedHeader("*");
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
@@ -52,3 +58,4 @@ public class GatewayServiceApplication {
         return new CorsWebFilter(source);
     }
 }
+

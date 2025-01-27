@@ -2,6 +2,7 @@ package com.example.playlistservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @ToString
 @Entity
+@Document(collection = "playlists_backup")
 @Table(name="playlists")
 public class Playlist implements Comparable<Playlist>, Serializable {
     @Id

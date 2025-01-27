@@ -12,7 +12,7 @@ public class PlaylistEventService {
 
     public PlaylistEventService(){
         this.restTemplate = new RestTemplate();
-        this.songServiceUrl = "http://localhost:8082";
+        this.songServiceUrl = "http://song-service:8080";
     }
 
     public void notifyPlaylistCreated(UUID playlistId, String name) {

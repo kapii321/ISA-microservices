@@ -1,8 +1,8 @@
 package com.example.playlistservice.initializer;
 
 import com.example.playlistservice.entity.Playlist;
-import com.example.playlistservice.services.PlaylistEventService;
-import com.example.playlistservice.services.PlaylistService;
+import com.example.playlistservice.repositories.PlaylistBackupRepository;
+import com.example.playlistservice.repositories.PlaylistRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,13 +11,13 @@ import java.util.UUID;
 
 @Component
 public class PlaylistDataInitializer implements InitializingBean {
-    private final PlaylistService playlistService;
-    private final PlaylistEventService eventService;
+    private final PlaylistRepository playlistRepository;
+    private final PlaylistBackupRepository playlistBackupRepository;
 
     @Autowired
-    public PlaylistDataInitializer(PlaylistService playlistService, PlaylistEventService eventService) {
-        this.playlistService = playlistService;
-        this.eventService = eventService;
+    public PlaylistDataInitializer(PlaylistRepository playlistRepository, PlaylistBackupRepository playlistBackupRepository) {
+        this.playlistRepository = playlistRepository;
+        this.playlistBackupRepository = playlistBackupRepository;
     }
 
     @Override
@@ -38,11 +38,10 @@ public class PlaylistDataInitializer implements InitializingBean {
                 .rank(2)
                 .build();
 
-        // Create playlists and notify song service
-        playlistService.createPlaylist(playlist1);
-        eventService.notifyPlaylistCreated(playlist1.getId(), playlist1.getName());
+        playlistRepository.save(playlist1);
+        playlistBackupRepository.save(playlist1);
 
-        playlistService.createPlaylist(playlist2);
-        eventService.notifyPlaylistCreated(playlist2.getId(), playlist2.getName());
+        playlistRepository.save(playlist2);
+        playlistBackupRepository.save(playlist2);
     }
 }

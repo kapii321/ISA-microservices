@@ -1,15 +1,10 @@
-FROM eclipse-temurin:23.0.1-jre
+FROM eclipse-temurin:23.0.1_11-jre
 
-LABEL title ="music-gateway-service"
-LABEL authors="Kacper"
-LABEL version="1.0.0-SNAPSHOT"
+LABEL org.opencontainers.image.title ="gateway-service"
+LABEL org.opencontainers.image.version="0.0.1-SNAPSHOT"
 
-ENV VERSION="1.0.0-SNAPSHOT"
+ENV VERSION="0.0.1-SNAPSHOT"
 ENV SERVER_PORT=8080
-
-ENV GATEWAY_HOST=localhost:8080
-ENV SONG_SERVICE_URL=http://song:8082
-ENV PLAYLIST_SERVICE_URL=http://playlist:8081
 
 EXPOSE 8080
 

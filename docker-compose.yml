@@ -2,27 +2,81 @@ version: '3.8'
 services:
   frontend:
     build: ./ng-music-app
+    image: ng-service
+    container_name: ng-service
+    restart: always
     ports:
       - "80:80"
     environment:
-      - API_URL=http://gateway:8080
+      API_URL: http://gateway-service:8080
+    networks:
+      - local
 
   gateway:
     build: ./gateway-service
+    image: gateway-service
+    container_name: gateway-service
+    restart: always
     ports:
       - "8080:8080"
     environment:
-      - SONG_SERVICE_URL=http://song:8082
-      - PLAYLIST_SERVICE_URL=http://playlist:8081
+      SONG.URL: "http://song-service:8080"
+      PLAYLIST.URL: "http://playlist-service:8080"
+      GATEWAY.HOST: "gateway-service:8080"
+    networks:
+      - local
 
   playlist:
     build: ./playlist-service
+    image: playlist-service
+    container_name: playlist-service
+    restart: always
     environment:
-      - SERVER_PORT=8081
+      SPRING_DATA_MONGODB_URI: mongodb://playlist-mongodb:27017/playlist_backup
     depends_on:
-      - song
+      - playlist-mongodb
+    networks:
+      - local
 
   song:
     build: ./song-service
+    image: song-service
+    container_name: song-service
+    restart: always
     environment:
-      - SERVER_PORT=8082
+      SPRING_DATA_MONGODB_URI: mongodb://song-mongodb:27017/song_backup
+    depends_on:
+      - song-mongodb
+    networks:
+      - local
+
+
+  song-mongodb:
+    image: mongo:latest
+    container_name: song-mongodb
+    ports:
+      - "27019:27017"
+    volumes:
+      - song_backup_data:/data/db
+    networks:
+      - local
+
+  playlist-mongodb:
+    image: mongo:latest
+    container_name: playlist-mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - playlist_backup_data:/data/db
+    networks:
+      - local
+
+
+networks:
+  local:
+    name: local
+    driver: bridge
+
+volumes:
+  song_backup_data:
+  playlist_backup_data:
