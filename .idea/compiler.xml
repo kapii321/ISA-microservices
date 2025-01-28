@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="gateway-service" />
+        <module name="discovery-service" />
       </profile>
       <profile name="Annotation profile for song-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -22,6 +23,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="discovery-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
       <module name="playlist-service" options="-parameters" />
       <module name="song-service" options="-parameters" />

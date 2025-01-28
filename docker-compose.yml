@@ -1,5 +1,14 @@
 version: '3.8'
 services:
+  discovery:
+    build: ./discovery-service
+    image: discovery-service
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - local
+
   frontend:
     build: ./ng-music-app
     image: ng-service
@@ -7,6 +16,8 @@ services:
     restart: always
     ports:
       - "80:80"
+    depends_on:
+      - gateway
     environment:
       API_URL: http://gateway-service:8080
     networks:
@@ -20,9 +31,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SONG.URL: "http://song-service:8080"
-      PLAYLIST.URL: "http://playlist-service:8080"
-      GATEWAY.HOST: "gateway-service:8080"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/
+    depends_on:
+      - discovery
     networks:
       - local
 
@@ -32,20 +43,41 @@ services:
     container_name: playlist-service
     restart: always
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://playlist-mongodb:27017/playlist_backup
+      SPRING_DATA_MONGODB_URI: mongodb://playlist-mongodb:27017/playlists
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/
     depends_on:
+      - discovery
       - playlist-mongodb
     networks:
       - local
 
-  song:
+  song-1:
     build: ./song-service
     image: song-service
-    container_name: song-service
+    container_name: song-service-1
     restart: always
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://song-mongodb:27017/song_backup
+      SPRING_DATA_MONGODB_URI: mongodb://song-mongodb:27017/songs
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/
+      SERVER_PORT: 8082
+      INSTANCE_ID: song-1
     depends_on:
+      - discovery
+      - song-mongodb
+    networks:
+      - local
+
+  song-2:
+    build: ./song-service
+    image: song-service
+    container_name: song-service-2
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://song-mongodb:27017/songs
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/
+      SERVER_PORT: 8083
+      INSTANCE_ID: song-2
+    depends_on:
+      - discovery
       - song-mongodb
     networks:
       - local
@@ -57,7 +89,7 @@ services:
     ports:
       - "27019:27017"
     volumes:
-      - song_backup_data:/data/db
+      - song_data:/data/db
     networks:
       - local
 
@@ -67,7 +99,7 @@ services:
     ports:
       - "27018:27017"
     volumes:
-      - playlist_backup_data:/data/db
+      - playlist_data:/data/db
     networks:
       - local
 
@@ -78,5 +110,5 @@ networks:
     driver: bridge
 
 volumes:
-  song_backup_data:
-  playlist_backup_data:
+  song_data:
+  playlist_data:

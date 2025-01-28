@@ -12,9 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Document(collection = "simplified_playlists_backup")
-@Table(name = "playlists")
+@Document(collection = "simplified_playlists")
 
 public class Playlist implements Serializable {
     @Id

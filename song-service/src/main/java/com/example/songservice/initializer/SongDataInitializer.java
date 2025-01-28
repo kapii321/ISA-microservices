@@ -2,7 +2,6 @@ package com.example.songservice.initializer;
 
 import com.example.songservice.entity.Playlist;
 import com.example.songservice.entity.Song;
-import com.example.songservice.repositories.PlaylistBackupRepository;
 import com.example.songservice.repositories.PlaylistRepository;
 import com.example.songservice.services.SongService;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,17 +14,15 @@ import java.util.UUID;
 public class SongDataInitializer implements InitializingBean {
     private final SongService songService;
     private final PlaylistRepository playlistRepository;
-    private final PlaylistBackupRepository playlistBackupRepository;
 
 
     private static final UUID PLAYLIST_1_ID = UUID.fromString("1d9c5400-a8fa-4e22-8453-d5d08c74eaf5");
     private static final UUID PLAYLIST_2_ID = UUID.fromString("2f97c370-f8ea-42d7-8769-d8f1f1c2ef68");
 
     @Autowired
-    public SongDataInitializer(SongService songService, PlaylistRepository playlistRepository, PlaylistBackupRepository playlistBackupRepository) {
+    public SongDataInitializer(SongService songService, PlaylistRepository playlistRepository) {
         this.songService = songService;
         this.playlistRepository = playlistRepository;
-        this.playlistBackupRepository = playlistBackupRepository;
 
     }
 
@@ -51,9 +48,7 @@ public class SongDataInitializer implements InitializingBean {
 
         // Save the playlists locally
         playlistRepository.save(playlist1);
-        playlistBackupRepository.save(playlist1);
         playlistRepository.save(playlist2);
-        playlistBackupRepository.save(playlist2);
 
         Song song1 = Song.builder()
                 .id(UUID.fromString("36a850c8-5cfd-4a3a-9e5d-d7ac2a69dc9b"))
