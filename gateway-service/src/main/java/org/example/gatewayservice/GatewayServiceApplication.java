@@ -3,6 +3,7 @@ package org.example.gatewayservice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class GatewayServiceApplication {
 
     public static void main(String[] args) {
@@ -22,24 +24,22 @@ public class GatewayServiceApplication {
 
     @Bean
     public RouteLocator customRouteLocator(
-            RouteLocatorBuilder builder,
-            @Value("${song.url}") String songUrl,
-            @Value("${playlist.url}") String playlistUrl
+            RouteLocatorBuilder builder
     ) {
         return builder.routes()
                 .route("songs-service", r -> r
                         .path("/songs/**", "/playlists/*/songs/**")
-                        .uri(songUrl))
+                        .uri("lb://song-service"))
                 // Events routes
                 .route("events-service", r -> r
                         .path("/events/**")
-                        .uri(songUrl))
+                        .uri("lb://song-service"))
                 // Playlist routes
                 .route("playlist-service", r -> r
                         .path("/playlists/**")
                         .and()
                         .not(p -> p.path("/playlists/*/songs/**")) // Exclude the songs path
-                        .uri(playlistUrl))
+                        .uri("lb://playlist-service"))
                 .build();
     }
 

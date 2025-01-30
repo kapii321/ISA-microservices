@@ -8,7 +8,10 @@ import com.example.songservice.function.SongToCollectionMapper;
 import com.example.songservice.entity.Song;
 import com.example.songservice.repositories.PlaylistRepository;
 import com.example.songservice.services.SongService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +21,9 @@ import java.util.UUID;
 
 @RestController
 public class SongController {
+    private static final Logger logger = LoggerFactory.getLogger(SongController.class);
+    @Value("${eureka.instance.instanceId}")
+    private String instanceId;
     private final SongService songService;
     private final SongCreateUpdateMapper songCreateUpdateMapper;
     private final SongReadMapper songReadMapper;
@@ -38,6 +44,7 @@ public class SongController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public SongCollectionDTO getSongs(){
+        logger.info("Request handled by instance: {}", instanceId);
         return songToCollectionMapper.apply(songService.findAll());
     }
 
@@ -53,6 +60,7 @@ public class SongController {
         Song song = songCreateUpdateMapper.apply(songCreateUpdateDTO);
         song.setPlaylist(playlist);
         songService.create(song);
+        logger.info("Request handled by instance: {}", instanceId);
 
         return songReadMapper.apply(song);
     }
@@ -61,6 +69,7 @@ public class SongController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public SongReadDTO getSongById(@PathVariable UUID id) {
+        logger.info("Request handled by instance: {}", instanceId);
         return songService.findByID(id)
                 .map(songReadMapper)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -69,6 +78,7 @@ public class SongController {
     @PutMapping("/songs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SongReadDTO updateSongById(@PathVariable UUID id, @RequestBody SongCreateUpdateDTO dto) {
+        logger.info("Request handled by instance: {}", instanceId);
         Song existingSong = songService.findByID(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -84,6 +94,7 @@ public class SongController {
     @DeleteMapping("/songs/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSong(@PathVariable UUID id) {
+        logger.info("Request handled by instance: {}", instanceId);
         songService.findByID(id)
                 .ifPresentOrElse(
                         song -> songService.delete(id),

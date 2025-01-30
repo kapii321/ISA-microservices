@@ -3,6 +3,7 @@ package com.example.songservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -15,10 +16,7 @@ import java.util.UUID;
 @ToString
 @EqualsAndHashCode
 @Builder
-
-@Entity
-@Document(collection = "songs_backup")
-@Table(name = "songs")
+@Document(collection = "songs")
 public class Song implements Comparable<Song>, Serializable {
     @Id
     private UUID id;
@@ -27,9 +25,7 @@ public class Song implements Comparable<Song>, Serializable {
     private int length;
     private String genre;
 
-
-    @ManyToOne
-    @JoinColumn(name="playlist")
+    @DBRef
     private Playlist playlist;
 
     @Override

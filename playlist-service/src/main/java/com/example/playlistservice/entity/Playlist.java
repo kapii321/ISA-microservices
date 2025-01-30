@@ -14,9 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
 @ToString
-@Entity
-@Document(collection = "playlists_backup")
-@Table(name="playlists")
+@Document(collection = "playlists")
 public class Playlist implements Comparable<Playlist>, Serializable {
     @Id
     private UUID id;
