@@ -22,15 +22,15 @@ A microservices-based music streaming application built with Spring Boot, Angula
 
 **Features**
 
-- Spring Boot Microservices with separate services for playlists and songs
+* Spring Boot Microservices with separate services for playlists and songs
 
-- Event-Based Communication using an event-driven approach alongside RESTful APIs
+* Event-Based Communication using an event-driven approach alongside RESTful APIs
 
-- Eureka Service Discovery & API Gateway for dynamic routing and load balancing
+* Eureka Service Discovery & API Gateway for dynamic routing and load balancing
 
-- MongoDB as the external database for both services (initially used H2 for development)
+* MongoDB as the external database for both services (initially used H2 for development)
 
-- Angular Frontend for user interaction
+* Angular Frontend for user interaction
 
-- Docker-Compose Deployment for easy containerized setup
+* Docker-Compose Deployment for easy containerized setup
 
