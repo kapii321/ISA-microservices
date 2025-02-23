@@ -1,4 +1,4 @@
-# SA-Microservices: Music Streaming App
+# ISA-Microservices: Music Streaming App
 
 **Overview**
 
@@ -6,14 +6,19 @@ A microservices-based music streaming application built with Spring Boot, Angula
 
 **Project Structure**
 
-ISA-Microservices/
-│── discovery-service/    # Eureka Server for service discovery
-│── gateway-service/      # API Gateway with load balancing
-│── playlist-service/     # Manages playlists (CRUD, events, REST API)
-│── song-service/         # Manages songs (CRUD, events, REST API)
-│── ng-music-app/         # Angular frontend (UI components, models, services)
-│── docker-compose.yml    # Configuration for containerized deployment
-│── Demo/                 # Initial monolithic version (before microservices split)
+- **discovery-service/** - Eureka Server for service discovery
+
+- **gateway-service/** - API Gateway with load balancing
+
+- **playlist-service/** - Manages playlists (CRUD, events, REST API)
+
+- **song-service/** - Manages songs (CRUD, events, REST API)
+
+- **ng-music-app/** - Angular frontend (UI components, models, services)
+
+- **docker-compose.yml** - Configuration for containerized deployment
+
+- **Demo/** - Initial monolithic version (before microservices split)
 
 **Features**
 
